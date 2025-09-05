@@ -19,45 +19,53 @@
 
             <!-- Categories -->
             <div ref="slider"
-                class="flex space-x-4 md:space-x-6 overflow-x-auto py-2 scrollbar-hide cursor-grab active:cursor-grabbing"
+                class="flex justify-center content-center md:justify-start space-x-4 md:space-x-6 overflow-x-auto py-2 scrollbar-hide cursor-grab active:cursor-grabbing"
                 :style="{ scrollBehavior: 'smooth' }" @mousedown="startDrag" @mousemove="onDrag" @mouseup="endDrag"
                 @mouseleave="endDrag" @touchstart="startDrag" @touchmove="onDrag" @touchend="endDrag">
                 <div v-for="category in categories" :key="category.id"
-                    class="flex-shrink-0 w-40 sm:w-48 md:w-56 group/card flex flex-col items-center pb-4"
+                    class="flex-shrink-0 w-44 sm:w-52 md:w-60 group/card flex flex-col rounded-2xl bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
                     @click="emit('categoryClick', category)">
-                    <!-- Imagen circular con cursor pointer -->
+
+                    <!-- Imagen rectangular superior -->
                     <div
-                        class="h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden mt-6 mb-1 relative group-hover/card:scale-105 transition-all duration-300 cursor-pointer">
-                        <!-- Imagen de fondo o icono -->
-                        <div class="h-full w-full flex items-center justify-center bg-gray-100 dark:bg-gray-700" :style="category.imageUrl ? {
+                        class="h-32 md:h-40 w-full relative overflow-hidden group-hover/card:scale-105 transition-transform duration-500">
+
+                        <div class="h-full w-full bg-gray-100 dark:bg-gray-700" :style="category.imageUrl ? {
                             'background-image': `url('${category.imageUrl}')`,
                             'background-size': imageFit,
-                            'background-position': 'center'
+                            'background-position': 'center',
+                            'background-repeat': 'no-repeat'
                         } : ''">
                             <!-- Icono de respaldo si no hay imagen -->
-                            <i v-if="!category.imageUrl"
-                                :class="`${defaultIcon} text-4xl md:text-5xl text-gray-600 dark:text-gray-400 transition-all duration-300 group-hover/card:text-white`"></i>
+                            <div class="flex items-center justify-center h-full w-full">
+                                <i v-if="!category.imageUrl"
+                                    :class="`${defaultIcon} text-5xl text-gray-500 dark:text-gray-400 group-hover/card:text-pink-500 transition-colors duration-300`"></i>
+                            </div>
                         </div>
 
-                        <!-- Overlay hover circular -->
+                        <!-- Overlay hover rectangular -->
                         <div
-                            class="absolute inset-0 bg-black bg-opacity-0 group-hover/card:bg-opacity-40 transition-all duration-300 flex items-center justify-center rounded-full cursor-pointer">
+                            class="absolute inset-0 bg-black/0 group-hover/card:bg-black/30 transition-all duration-500 flex items-center justify-center">
                             <i v-if="showLinkIcon"
-                                class="ri-external-link-line text-white text-3xl opacity-0 group-hover/card:opacity-100 transition-all duration-300 transform group-hover/card:scale-125"></i>
+                                class="ri-external-link-line text-white text-3xl opacity-0 group-hover/card:opacity-100 transition-all duration-500 transform group-hover/card:scale-125"></i>
                         </div>
                     </div>
 
-                    <!-- Texto centrado -->
-                    <div class="p-2 text-center w-full">
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ category.name }}</h3>
+                    <!-- Contenido inferior -->
+                    <div class="p-4 text-center flex flex-col flex-grow">
+                        <h3
+                            class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 group-hover/card:text-pink-600 dark:group-hover/card:text-pink-400 transition-colors duration-300">
+                            {{ category.name }}
+                        </h3>
                         <slot name="description" :category="category">
                             <p v-if="category.description"
-                                class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mx-auto max-w-[90%]">
+                                class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 leading-snug">
                                 {{ category.description }}
                             </p>
                         </slot>
                     </div>
                 </div>
+
             </div>
 
             <!-- Navigation buttons - Desktop CORREGIDO (ahora usa handleScrollRight) -->
